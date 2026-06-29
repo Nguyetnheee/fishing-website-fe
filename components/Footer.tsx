@@ -55,27 +55,27 @@ export default function Footer() {
           </h4>
           <ul className="text-[13px] text-on-surface-variant space-y-2.5 font-sans font-medium">
             <li>
-              <a href="#privacy" className="hover:text-primary transition-colors duration-200">
+              <a href="/privacy-policy" className="hover:text-primary transition-colors duration-200">
                 Chính sách bảo mật
               </a>
             </li>
             <li>
-              <a href="#returns" className="hover:text-primary transition-colors duration-200">
+              <a href="/return-refund-policy" className="hover:text-primary transition-colors duration-200">
                 Chính sách đổi trả & hoàn tiền
               </a>
             </li>
             <li>
-              <a href="#shipping" className="hover:text-primary transition-colors duration-200">
+              <a href="/shipping-policy" className="hover:text-primary transition-colors duration-200">
                 Chính sách vận chuyển
               </a>
             </li>
             <li>
-              <a href="#payment" className="hover:text-primary transition-colors duration-200">
+              <a href="/payment-policy" className="hover:text-primary transition-colors duration-200">
                 Chính sách thanh toán
               </a>
             </li>
             <li>
-              <a href="#terms" className="hover:text-primary transition-colors duration-200">
+              <a href="/terms-of-service" className="hover:text-primary transition-colors duration-200">
                 Điều khoản dịch vụ
               </a>
             </li>
