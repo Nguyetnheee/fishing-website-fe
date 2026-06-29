@@ -3,6 +3,7 @@
 import React from 'react';
 import Header from '../components/Header';
 import ProductCard from '../components/ProductCard';
+import Footer from '../components/Footer';
 import { ArrowRight, ShieldCheck, Leaf } from 'lucide-react';
 
 export default function LandingPage() {
@@ -206,71 +207,8 @@ export default function LandingPage() {
 
       </main>
 
-      {/* Visual footer matches mockup specifications */}
-      <footer className="bg-surface-container text-on-surface py-lg border-t border-outline-variant/30">
-        <div className="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-md">
-          {/* Logo & Description */}
-          <div>
-            <h4 className="text-body-lg font-extrabold text-primary mb-sm">
-              WildStream Gear
-            </h4>
-            <p className="text-label-sm text-on-surface-variant leading-relaxed max-w-xs">
-              Đồng hành cùng bạn trong mỗi chuyến đi, nâng tầm trải nghiệm khám phá thiên nhiên.
-            </p>
-          </div>
-
-          {/* Column 2: Categories */}
-          <div>
-            <h4 className="text-label-md font-bold text-on-surface uppercase mb-sm tracking-wider">
-              Trang bị
-            </h4>
-            <ul className="text-label-sm text-on-surface-variant space-y-2 font-sans">
-              <li><a href="#sea" className="hover:text-primary transition-colors">Sea Fishing</a></li>
-              <li><a href="/category#river" className="hover:text-primary transition-colors">River Fishing</a></li>
-              <li><a href="#lake" className="hover:text-primary transition-colors">Lake Fishing</a></li>
-              <li><a href="#camping" className="hover:text-primary transition-colors">Camping Gear</a></li>
-            </ul>
-          </div>
-
-          {/* Column 3: Support */}
-          <div>
-            <h4 className="text-label-md font-bold text-on-surface uppercase mb-sm tracking-wider">
-              Hỗ trợ
-            </h4>
-            <ul className="text-label-sm text-on-surface-variant space-y-2 font-sans">
-              <li><a href="#shipping" className="hover:text-primary transition-colors">Shipping Policy</a></li>
-              <li><a href="#returns" className="hover:text-primary transition-colors">Returns</a></li>
-              <li><a href="#sustainability" className="hover:text-primary transition-colors">Sustainability</a></li>
-              <li><a href="#contact" className="hover:text-primary transition-colors">Contact Us</a></li>
-            </ul>
-          </div>
-
-          {/* Column 4: Newsletter */}
-          <div>
-            <h4 className="text-label-md font-bold text-on-surface uppercase mb-sm tracking-wider">
-              Bản tin
-            </h4>
-            <p className="text-label-sm text-on-surface-variant mb-sm font-sans leading-relaxed">
-              Nhận thông tin về sản phẩm mới và ưu đãi độc quyền.
-            </p>
-            <div className="flex gap-xs w-full">
-              <input 
-                type="email" 
-                placeholder="Email của bạn" 
-                className="bg-surface-container-lowest border border-outline-variant/60 rounded-md px-sm py-2 text-label-sm text-on-surface placeholder-on-surface-variant/40 focus:outline-none focus:border-primary w-full"
-              />
-              <button className="bg-primary hover:bg-primary-container text-white rounded-md px-md py-2 text-label-sm font-semibold transition-colors flex-shrink-0">
-                Gửi
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom copyright */}
-        <div className="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop border-t border-outline-variant/20 mt-lg pt-sm text-center text-[11px] text-on-surface-variant/50 font-sans">
-          © 2024 WildStream Gear. Built for the Wild.
-        </div>
-      </footer>
+      {/* Redesigned Footer complying with Ministry of Industry and Trade regulations */}
+      <Footer />
     </div>
   );
 }

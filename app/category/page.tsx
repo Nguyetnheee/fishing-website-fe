@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Header from '../../components/Header';
 import ProductCard from '../../components/ProductCard';
+import Footer from '../../components/Footer';
 import { ChevronLeft, ChevronRight, Filter, LayoutGrid, Award, Shield, Tag } from 'lucide-react';
 
 export default function CategoryPage() {
@@ -993,82 +994,8 @@ export default function CategoryPage() {
 
       </main>
 
-      {/* Styled Footer matching mockup structure */}
-      <footer className="bg-surface-container text-on-surface py-lg border-t border-outline-variant/30">
-        <div className="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-md">
-          {/* Logo & Concierge Description */}
-          <div className="text-left">
-            <h4 className="text-body-lg font-extrabold text-primary mb-sm">
-              WildStream Gear
-            </h4>
-            <p className="text-label-sm text-on-surface-variant leading-relaxed max-w-xs mb-sm">
-              © 2024 WildStream Gear. Professional Wilderness Concierge.
-            </p>
-          </div>
-
-          {/* Col 2: About info */}
-          <div className="text-left">
-            <h4 className="text-label-md font-bold text-on-surface uppercase mb-sm tracking-wider opacity-0 pointer-events-none hidden md:block">
-              About
-            </h4>
-            <ul className="text-label-sm text-on-surface-variant space-y-2 font-sans">
-              <li><a href="#about-us" className="hover:text-primary transition-colors">About Us</a></li>
-              <li><a href="#help-center" className="hover:text-primary transition-colors">Help Center</a></li>
-              <li><a href="#contact-us" className="hover:text-primary transition-colors">Contact</a></li>
-            </ul>
-          </div>
-
-          {/* Col 3: Sea & River */}
-          <div className="text-left">
-            <h4 className="text-label-md font-bold text-on-surface uppercase mb-sm tracking-wider opacity-0 pointer-events-none hidden md:block">
-              Trang bị 1
-            </h4>
-            <ul className="text-label-sm space-y-2 font-sans">
-              <li>
-                <a 
-                  href="/category#sea" 
-                  className={`transition-colors ${activeHash === 'sea' ? 'text-primary font-bold hover:text-primary-container' : 'text-on-surface-variant hover:text-primary'}`}
-                >
-                  Sea Fishing
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="/category#river" 
-                  className={`transition-colors ${activeHash === 'river' ? 'text-primary font-bold hover:text-primary-container' : 'text-on-surface-variant hover:text-primary'}`}
-                >
-                  River Fishing
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Col 4: Lake & Camping */}
-          <div className="text-left">
-            <h4 className="text-label-md font-bold text-on-surface uppercase mb-sm tracking-wider opacity-0 pointer-events-none hidden md:block">
-              Trang bị 2
-            </h4>
-            <ul className="text-label-sm space-y-2 font-sans">
-              <li>
-                <a 
-                  href="/category#lake" 
-                  className={`transition-colors ${activeHash === 'lake' ? 'text-primary font-bold hover:text-primary-container' : 'text-on-surface-variant hover:text-primary'}`}
-                >
-                  Lake Fishing
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="/category#camping" 
-                  className={`transition-colors ${activeHash === 'camping' ? 'text-primary font-bold hover:text-primary-container' : 'text-on-surface-variant hover:text-primary'}`}
-                >
-                  Camping Gear
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </footer>
+      {/* Redesigned Footer complying with Ministry of Industry and Trade regulations */}
+      <Footer />
     </div>
   );
 }

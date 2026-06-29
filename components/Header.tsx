@@ -101,7 +101,7 @@ export default function Header() {
             aria-label="Giỏ hàng"
           >
             <ShoppingCart className="w-5 h-5" />
-            <span className="absolute top-0.5 right-0.5 bg-accent-orange text-white text-[9px] w-4.5 h-4.5 rounded-full flex items-center justify-center font-sans font-bold shadow-sm">
+            <span className="absolute top-0.5 right-0.5 bg-accent-orange text-white text-[9px] w-[18px] h-[18px] rounded-full flex items-center justify-center font-sans font-bold shadow-sm leading-none">
               3
             </span>
           </button>
