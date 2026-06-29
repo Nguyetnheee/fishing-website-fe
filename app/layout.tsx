@@ -1,8 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
-
-const inter = Inter({ subsets: ['latin', 'vietnamese'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   title: 'Wild & Water | Trang bị dã ngoại & câu cá cao cấp',
@@ -15,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="vi" className={`${inter.variable}`}>
+    <html lang="vi">
       <body className="bg-background text-on-surface antialiased font-sans min-h-screen">
         {children}
       </body>
