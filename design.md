@@ -38,7 +38,7 @@ Hệ thống màu sắc được cấu hình trong `tailwind.config.ts` nhằm m
 
 ## 3. Typography (Hệ chữ)
 
-*   **Phông chữ chính:** `Inter` (Font không chân - Sans-serif), tối ưu hiển thị tiếng Việt mượt mà.
+*   **Phông chữ chính:** Hệ thống `Sans-serif` (`system-ui`, `-apple-system`, `BlinkMacSystemFont`, `Segoe UI`, `Roboto`, `Helvetica Neue`, `Arial`, `sans-serif`), tối ưu hiển thị tiếng Việt chuyên nghiệp, mượt mà và tải trang nhanh chóng.
 *   **Font Weights:** `400` (Regular), `500` (Medium), `600` (Semibold), `700` (Bold), `800` (Extrabold - dùng riêng cho Logo thương hiệu).
 
 ### Thang kích thước chữ chuẩn (Font Scale):
@@ -144,7 +144,7 @@ Mọi thẻ sản phẩm đều phải tuân theo cấu trúc sau:
 ## 7. Checklist khi Thiết kế Trang Mới
 
 Khi tạo thêm trang mới (ví dụ: Trang chi tiết sản phẩm, Trang giỏ hàng, Trang thanh toán), hãy tự kiểm tra theo các câu hỏi sau:
-1.  [ ] Trang đã sử dụng font `Inter` (`font-sans`) và nền `bg-background` (`#f8f9fa`) chưa?
+1.  [ ] Trang đã sử dụng font hệ thống `Sans-serif` (`font-sans`) và nền `bg-background` (`#f8f9fa`) chưa?
 2.  [ ] Các tiêu đề chính có dùng đúng cỡ chữ và độ dày quy định trong mục 3 không?
 3.  [ ] Các thẻ thông tin, khối giao diện có được bo góc đúng chuẩn `rounded-2xl` và đổ bóng `shadow-ambient` để tạo độ nổi khối tactile không?
 4.  [ ] Nếu trang thuộc về một danh mục cụ thể (Biển/Sông/Hồ/Cắm trại), tông màu và phong cách thẻ sản phẩm có khớp với thuộc tính danh mục đó tại mục 5 không?
