@@ -1,13 +1,25 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Search, ShoppingCart, User, Menu, X } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Search, ShoppingCart, User, Menu, X, LogIn, UserPlus, ClipboardList } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const [activeTab, setActiveTab] = useState('Sông');
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const navLinks = [
     { label: 'Trang chủ', href: '/' },
@@ -95,25 +107,70 @@ export default function Header() {
           </div>
 
           {/* Cart Icon with Orange Badge "3" (Matches Mockup) */}
-          <button 
-            type="button"
-            className="p-2 rounded-full hover:bg-surface-container text-on-surface hover:text-primary transition-all duration-200 focus-visible:outline-primary relative"
+          <a 
+            href="/cart"
+            className="p-2 rounded-full hover:bg-surface-container text-on-surface hover:text-primary transition-all duration-200 focus-visible:outline-primary relative block"
             aria-label="Giỏ hàng"
           >
             <ShoppingCart className="w-5 h-5" />
             <span className="absolute top-0.5 right-0.5 bg-accent-orange text-white text-[9px] w-[18px] h-[18px] rounded-full flex items-center justify-center font-sans font-bold shadow-sm leading-none">
               3
             </span>
-          </button>
+          </a>
 
-          {/* User Icon */}
-          <button 
-            type="button"
-            className="p-2 rounded-full hover:bg-surface-container text-on-surface hover:text-primary transition-all duration-200 focus-visible:outline-primary"
-            aria-label="Tài khoản"
-          >
-            <User className="w-5 h-5" />
-          </button>
+          {/* User Icon with Dropdown Menu */}
+          <div className="relative flex items-center" ref={userMenuRef}>
+            <button 
+              type="button"
+              onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+              className={`p-2 rounded-full hover:bg-surface-container text-on-surface hover:text-primary transition-all duration-200 focus-visible:outline-primary ${isUserMenuOpen ? 'bg-surface-container text-primary' : ''}`}
+              aria-label="Tài khoản"
+              aria-expanded={isUserMenuOpen}
+            >
+              <User className="w-5 h-5" />
+            </button>
+
+            {/* Dropdown Menu */}
+            {isUserMenuOpen && (
+              <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-outline-variant/30 rounded-xl shadow-ambient py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                <a
+                  href="/profile"
+                  onClick={() => setIsUserMenuOpen(false)}
+                  className="flex items-center gap-xs px-4 py-2.5 text-label-sm text-on-surface-variant hover:text-[#00288e] hover:bg-surface-container-low transition-colors duration-150 cursor-pointer font-sans font-bold"
+                >
+                  <User className="w-4 h-4 text-outline" />
+                  Trang cá nhân
+                </a>
+                <a
+                  href="/order-tracking"
+                  onClick={() => setIsUserMenuOpen(false)}
+                  className="flex items-center gap-xs px-4 py-2.5 text-label-sm text-on-surface-variant hover:text-[#00288e] hover:bg-surface-container-low transition-colors duration-150 cursor-pointer font-sans font-bold"
+                >
+                  <ClipboardList className="w-4 h-4 text-outline" />
+                  Theo dõi đơn hàng
+                </a>
+                
+                <div className="border-t border-outline-variant/20 my-1"></div>
+                
+                <a
+                  href="/login"
+                  onClick={() => setIsUserMenuOpen(false)}
+                  className="flex items-center gap-xs px-4 py-2.5 text-label-sm text-on-surface-variant hover:text-[#00288e] hover:bg-surface-container-low transition-colors duration-150 cursor-pointer font-sans font-bold"
+                >
+                  <LogIn className="w-4 h-4 text-outline" />
+                  Đăng nhập
+                </a>
+                <a
+                  href="/register"
+                  onClick={() => setIsUserMenuOpen(false)}
+                  className="flex items-center gap-xs px-4 py-2.5 text-label-sm text-on-surface-variant hover:text-[#00288e] hover:bg-surface-container-low transition-colors duration-150 cursor-pointer font-sans font-bold"
+                >
+                  <UserPlus className="w-4 h-4 text-outline" />
+                  Đăng ký
+                </a>
+              </div>
+            )}
+          </div>
 
           {/* Mobile Menu Toggle */}
           <button
@@ -158,6 +215,43 @@ export default function Header() {
                 </a>
               );
             })}
+            
+            {/* Mobile User Section */}
+            <div className="border-t border-outline-variant/20 my-2 pt-2">
+              <a
+                href="/profile"
+                className="flex items-center gap-sm text-body-md py-2 px-3 rounded-md hover:bg-surface-container transition-all duration-200 font-sans text-on-surface-variant hover:text-primary"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <User className="w-5 h-5 text-outline" />
+                Trang cá nhân
+              </a>
+              <a
+                href="/order-tracking"
+                className="flex items-center gap-sm text-body-md py-2 px-3 rounded-md hover:bg-surface-container transition-all duration-200 font-sans text-on-surface-variant hover:text-primary"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <ClipboardList className="w-5 h-5 text-outline" />
+                Theo dõi đơn hàng
+              </a>
+              <div className="border-t border-outline-variant/10 my-2"></div>
+              <div className="grid grid-cols-2 gap-sm px-3 pt-1">
+                <a
+                  href="/login"
+                  className="text-center text-label-md font-bold py-2 bg-surface-container rounded-md text-on-surface hover:bg-primary/10 transition-colors duration-150"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Đăng nhập
+                </a>
+                <a
+                  href="/register"
+                  className="text-center text-label-md font-bold py-2 bg-[#00288e] text-white rounded-md hover:bg-[#1e40af] transition-colors duration-150"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Đăng ký
+                </a>
+              </div>
+            </div>
           </nav>
         </div>
       )}
