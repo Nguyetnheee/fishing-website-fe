@@ -26,7 +26,7 @@ export default function Header() {
     { label: 'Biển', href: '/category#sea' },
     { label: 'Sông', href: '/category#river' },
     { label: 'Hồ', href: '/category#lake' },
-    { label: 'Hoạt động', href: '#activities' },
+    { label: 'Khám phá', href: '/blog' },
     { label: 'Giới thiệu', href: '#about' },
   ];
 
@@ -45,6 +45,8 @@ export default function Header() {
         }
       } else if (pathname === '/') {
         setActiveTab('Trang chủ');
+      } else if (pathname === '/blog') {
+        setActiveTab('Khám phá');
       } else {
         setActiveTab('');
       }

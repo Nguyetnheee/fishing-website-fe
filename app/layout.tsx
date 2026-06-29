@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Wild & Water | Trang bị dã ngoại & câu cá cao cấp',
-  description: 'Chinh phục thiên nhiên hoang dã với các bộ trang bị chuyên biệt cho biển, sông suối và cắm trại.',
+  description: 'Chinh phục thiên nhiên với các bộ trang bị chuyên biệt cho biển, sông suối và cắm trại.',
 };
 
 export default function RootLayout({
