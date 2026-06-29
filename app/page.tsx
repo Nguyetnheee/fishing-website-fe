@@ -69,7 +69,7 @@ export default function LandingPage() {
 
       {/* Main Container */}
       <main className="flex-grow w-full max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-xs md:py-md">
-        
+
         {/* HERO SECTION: Title & Description */}
         <section className="py-lg text-left md:text-center max-w-4xl mx-auto">
           {/* Centered large Headline with exact mockup text and break */}
@@ -87,15 +87,15 @@ export default function LandingPage() {
         <section className="pb-xl">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-sm md:gap-gutter">
             {terrains.map((terrain) => (
-              <a 
+              <a
                 key={terrain.title}
                 href={terrain.href}
                 className="group h-[480px] rounded-2xl overflow-hidden relative shadow-ambient hover:shadow-ambient-hover transition-all duration-300 cursor-pointer block"
               >
                 {/* Background Image */}
-                <img 
-                  src={terrain.imageUrl} 
-                  alt={terrain.title} 
+                <img
+                  src={terrain.imageUrl}
+                  alt={terrain.title}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-102"
                 />
 
@@ -110,17 +110,17 @@ export default function LandingPage() {
                       {terrain.badge}
                     </span>
                   </div>
-                  
+
                   {/* Category Title */}
                   <h3 className="text-headline-md font-bold text-white tracking-tight leading-tight">
                     {terrain.title}
                   </h3>
-                  
+
                   {/* Subtitle */}
                   <p className="text-label-sm text-surface-dim font-sans opacity-80 mb-sm">
                     {terrain.subtitle}
                   </p>
-                  
+
                   {/* Visual Button mimicking design: Khám phá ngay → */}
                   <div className="w-full bg-white text-on-surface rounded-full py-2.5 px-md text-label-sm font-semibold flex items-center justify-between shadow-sm group-hover:bg-surface-bright transition-colors duration-200">
                     <span>Khám phá ngay</span>
@@ -137,9 +137,9 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-lg md:gap-xl items-center">
             {/* Left Column: Reel Detail Image */}
             <div className="rounded-2xl overflow-hidden shadow-ambient border border-outline-variant/10 aspect-[4/3] bg-surface-container">
-              <img 
-                src="/images/reel-detail.png" 
-                alt="WildStream Gear Technology" 
+              <img
+                src="/images/reel-detail.png"
+                alt="WildStream Gear Technology"
                 className="w-full h-full object-cover"
               />
             </div>

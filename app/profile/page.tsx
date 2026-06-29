@@ -18,7 +18,13 @@ import {
   Mail,
   Phone,
   Eye,
-  X
+  X,
+  Compass,
+  BookOpen,
+  Heart,
+  ChevronLeft,
+  ChevronRight,
+  Send
 } from 'lucide-react';
 
 interface OrderItem {
@@ -46,18 +52,13 @@ interface Address {
   isDefault: boolean;
 }
 
-interface Review {
-  id: string;
-  productName: string;
-  productImage: string;
-  rating: number;
-  comment: string;
-  date: string;
-}
+
+
+
 
 export default function ProfileDashboard() {
-  // Tab states: 'account' | 'orders' | 'addresses' | 'reviews'
-  const [activeTab, setActiveTab] = useState<'account' | 'orders' | 'addresses' | 'reviews'>('account');
+  // Tab states: 'account' | 'orders' | 'addresses'
+  const [activeTab, setActiveTab] = useState<'account' | 'orders' | 'addresses'>('account');
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' | 'error' } | null>(null);
 
@@ -153,25 +154,7 @@ export default function ProfileDashboard() {
     },
   ]);
 
-  // Mock Reviews
-  const [reviews, setReviews] = useState<Review[]>([
-    {
-      id: 'rev-1',
-      productName: 'Cần câu Carbon Pro-X',
-      productImage: '/images/product-rod.png',
-      rating: 5,
-      comment: 'Cần nhẹ, dẻo dai và rất chắc chắn. Cầm ném mồi rất sướng tay, thiết kế cao cấp đúng chất WildStream.',
-      date: '25/06/2026',
-    },
-    {
-      id: 'rev-2',
-      productName: 'Lều thám hiểm Peak-4',
-      productImage: '/images/product-tent.png',
-      rating: 4,
-      comment: 'Lều rộng rãi, chống gió mưa cực tốt trong chuyến cắm trại vừa qua. Điểm trừ duy nhất là đóng gói hơi to và nặng khi đi trekking dài ngày.',
-      date: '18/06/2026',
-    },
-  ]);
+
 
   // Toast Helper
   const showToast = (message: string, type: 'success' | 'info' | 'error' = 'success') => {
@@ -292,11 +275,7 @@ export default function ProfileDashboard() {
     showToast('Xóa địa chỉ thành công!');
   };
 
-  // Delete Review
-  const handleDeleteReview = (id: string) => {
-    setReviews(prev => prev.filter(rev => rev.id !== id));
-    showToast('Đã gỡ bài đánh giá thành công!');
-  };
+
 
   // Mock Logout Action
   const handleLogout = () => {
@@ -413,18 +392,9 @@ export default function ProfileDashboard() {
                   <span className="text-left">Sổ địa chỉ</span>
                 </button>
 
-                {/* Tab: Đánh giá của tôi */}
-                <button
-                  onClick={() => { setActiveTab('reviews'); setShowAddressForm(false); }}
-                  className={`w-full flex items-center gap-sm px-4 py-3 rounded-xl text-label-md font-semibold transition-all duration-200 focus:outline-none ${
-                    activeTab === 'reviews'
-                      ? 'bg-primary/5 text-primary font-bold'
-                      : 'text-on-surface-variant hover:text-primary hover:bg-surface-container-low'
-                  }`}
-                >
-                  <Star className={`w-5 h-5 ${activeTab === 'reviews' ? 'text-primary' : 'text-outline'}`} />
-                  <span className="text-left">Đánh giá của tôi</span>
-                </button>
+
+
+
 
                 {/* Tab: Đăng xuất */}
                 <button
@@ -975,91 +945,7 @@ export default function ProfileDashboard() {
                 </div>
               )}
 
-              {/* TAB 4: ĐÁNH GIÁ CỦA TÔI (MY REVIEWS) */}
-              {activeTab === 'reviews' && (
-                <div className="animate-in fade-in duration-300">
-                  {/* Header */}
-                  <div className="border-b border-outline-variant/20 pb-sm mb-md text-left">
-                    <h1 className="text-headline-md font-bold text-primary tracking-tight">
-                      Đánh giá của tôi
-                    </h1>
-                    <p className="text-body-md text-on-surface-variant leading-relaxed mt-1">
-                      Xem lại các bài viết và nhận xét về sản phẩm bạn đã trải nghiệm
-                    </p>
-                  </div>
 
-                  {/* Reviews List */}
-                  <div className="space-y-sm">
-                    {reviews.length > 0 ? (
-                      reviews.map((rev) => (
-                        <div 
-                          key={rev.id} 
-                          className="border border-outline-variant/30 rounded-2xl p-md bg-surface-container-lowest text-left shadow-sm flex gap-md relative transition-all duration-200 hover:border-outline-variant/60"
-                        >
-                          {/* Product Miniature */}
-                          <div className="w-16 h-20 rounded-xl overflow-hidden bg-surface-container-low border border-outline-variant/20 flex-shrink-0 flex items-center justify-center">
-                            <img 
-                              src={rev.productImage} 
-                              alt={rev.productName} 
-                              className="w-full h-full object-contain p-1"
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&q=80&w=256";
-                              }}
-                            />
-                          </div>
-
-                          {/* Review Details */}
-                          <div className="flex-grow flex flex-col justify-between py-0.5">
-                            <div>
-                              <div className="flex justify-between items-start">
-                                <h4 className="text-label-md font-bold text-on-surface pr-8">
-                                  {rev.productName}
-                                </h4>
-                                <button
-                                  type="button"
-                                  onClick={() => handleDeleteReview(rev.id)}
-                                  className="absolute top-4 right-4 p-1 hover:bg-error/5 text-outline hover:text-error rounded-md transition-colors"
-                                  title="Xóa đánh giá"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </button>
-                              </div>
-
-                              {/* Star Ratings & Date */}
-                              <div className="flex items-center gap-xs mt-1">
-                                <div className="flex items-center text-[#ffc107]">
-                                  {Array.from({ length: 5 }).map((_, idx) => (
-                                    <Star 
-                                      key={idx} 
-                                      className={`w-3.5 h-3.5 fill-current ${
-                                        idx < rev.rating ? 'text-[#ffc107]' : 'text-outline-variant/40'
-                                      }`} 
-                                    />
-                                  ))}
-                                </div>
-                                <span className="text-[12px] text-on-surface-variant font-medium">
-                                  {rev.date}
-                                </span>
-                              </div>
-                            </div>
-
-                            {/* Comment */}
-                            <p className="text-body-md text-on-surface-variant leading-relaxed mt-sm bg-surface-container-low/40 p-sm rounded-xl border border-outline-variant/10">
-                              "{rev.comment}"
-                            </p>
-                          </div>
-
-                        </div>
-                      ))
-                    ) : (
-                      <div className="text-center py-xl">
-                        <Star className="w-12 h-12 text-outline-variant/60 mx-auto mb-xs" />
-                        <span className="text-body-md text-on-surface-variant">Bạn chưa gửi bài đánh giá nào.</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
 
             </div>
 
@@ -1072,38 +958,6 @@ export default function ProfileDashboard() {
       {/* FOOTER */}
       <Footer />
 
-      {/* CONFIRM LOGOUT MODAL */}
-      {showLogoutModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-sm bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="w-full max-w-sm bg-white rounded-2xl border border-outline-variant/30 shadow-2xl p-md sm:p-lg text-center animate-in zoom-in-95 duration-200">
-            <div className="w-12 h-12 rounded-full bg-error/10 text-error flex items-center justify-center mx-auto mb-sm">
-              <LogOut className="w-6 h-6" />
-            </div>
-            <h3 className="text-headline-md font-bold text-on-surface font-sans">
-              Xác nhận đăng xuất
-            </h3>
-            <p className="text-body-md text-on-surface-variant mt-sm leading-relaxed">
-              Bạn có chắc chắn muốn đăng xuất khỏi tài khoản WildStream Gear không?
-            </p>
-            <div className="grid grid-cols-2 gap-sm mt-md">
-              <button
-                type="button"
-                onClick={() => setShowLogoutModal(false)}
-                className="w-full py-2.5 border border-outline-variant/60 hover:bg-surface-container-low rounded-md text-label-sm font-semibold text-on-surface-variant transition-colors"
-              >
-                Hủy bỏ
-              </button>
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="w-full py-2.5 bg-error hover:bg-[#a81616] rounded-md text-label-sm font-bold text-white transition-all duration-200 shadow-sm"
-              >
-                Đăng xuất
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
