@@ -15,10 +15,18 @@ export default function RegisterPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!fullname || !emailOrPhone || !password || !confirmPassword) {
       alert('Vui lòng điền đầy đủ thông tin đăng ký!');
+      return;
+    }
+    if (!emailOrPhone.endsWith('@gmail.com')) {
+      alert('Email đăng ký phải có đuôi @gmail.com!');
+      return;
+    }
+    if (password.length < 5) {
+      alert('Mật khẩu phải bao gồm ít nhất 5 ký tự!');
       return;
     }
     if (password !== confirmPassword) {
@@ -31,12 +39,36 @@ export default function RegisterPage() {
     }
 
     setLoading(true);
-    // Simulate register operation
-    setTimeout(() => {
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      const registerUrl = baseUrl ? `${baseUrl}/auth/register` : '/api/auth/register';
+
+      const response = await fetch(registerUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fullname,
+          email: emailOrPhone,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(data.message || 'Tạo tài khoản thành công! Bạn sẽ được chuyển hướng đến trang Đăng nhập.');
+        window.location.href = '/login';
+      } else {
+        alert(data.message || 'Đăng ký thất bại. Vui lòng kiểm tra lại thông tin!');
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      alert('Đã xảy ra lỗi kết nối đến máy chủ. Vui lòng thử lại sau!');
+    } finally {
       setLoading(false);
-      alert('Tạo tài khoản thành công! Bạn sẽ được chuyển hướng đến trang Đăng nhập.');
-      window.location.href = '/login';
-    }, 1200);
+    }
   };
 
   return (
@@ -85,14 +117,14 @@ export default function RegisterPage() {
               />
             </div>
 
-            {/* Input 2: Email hoặc Số điện thoại */}
+            {/* Input 2: Email */}
             <div className="flex flex-col gap-xs">
               <label className="text-label-sm font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-xs">
-                <Mail className="w-4 h-4 text-outline" /> Email hoặc Số điện thoại
+                <Mail className="w-4 h-4 text-outline" /> Email (Gmail)
               </label>
               <input
-                type="text"
-                placeholder="email@example.com hoặc 09xxxxxxxx"
+                type="email"
+                placeholder="example@gmail.com"
                 value={emailOrPhone}
                 onChange={(e) => setEmailOrPhone(e.target.value)}
                 className="bg-[#f8f9fa] border border-[#e5e7eb] rounded-lg py-2 pl-3 px-3.5 text-body-md text-on-surface placeholder-on-surface-variant/40 focus:outline-none focus:border-[#00288e] focus:ring-1 focus:ring-[#00288e] transition-all duration-200"

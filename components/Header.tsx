@@ -10,6 +10,23 @@ export default function Header() {
   const userMenuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const [activeTab, setActiveTab] = useState('Sông');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const email = localStorage.getItem('email');
+    setIsLoggedIn(!!token);
+    if (email) setUserEmail(email);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
+    localStorage.removeItem('role');
+    setIsLoggedIn(false);
+    window.location.reload();
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -135,6 +152,11 @@ export default function Header() {
             {/* Dropdown Menu */}
             {isUserMenuOpen && (
               <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-outline-variant/30 rounded-xl shadow-ambient py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                {isLoggedIn && (
+                  <div className="px-4 py-2 text-[11px] text-on-surface-variant/60 font-sans truncate border-b border-outline-variant/10">
+                    {userEmail}
+                  </div>
+                )}
                 <a
                   href="/profile"
                   onClick={() => setIsUserMenuOpen(false)}
@@ -154,22 +176,38 @@ export default function Header() {
                 
                 <div className="border-t border-outline-variant/20 my-1"></div>
                 
-                <a
-                  href="/login"
-                  onClick={() => setIsUserMenuOpen(false)}
-                  className="flex items-center gap-xs px-4 py-2.5 text-label-sm text-on-surface-variant hover:text-[#00288e] hover:bg-surface-container-low transition-colors duration-150 cursor-pointer font-sans font-bold"
-                >
-                  <LogIn className="w-4 h-4 text-outline" />
-                  Đăng nhập
-                </a>
-                <a
-                  href="/register"
-                  onClick={() => setIsUserMenuOpen(false)}
-                  className="flex items-center gap-xs px-4 py-2.5 text-label-sm text-on-surface-variant hover:text-[#00288e] hover:bg-surface-container-low transition-colors duration-150 cursor-pointer font-sans font-bold"
-                >
-                  <UserPlus className="w-4 h-4 text-outline" />
-                  Đăng ký
-                </a>
+                {isLoggedIn ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsUserMenuOpen(false);
+                      handleLogout();
+                    }}
+                    className="w-full flex items-center gap-xs px-4 py-2.5 text-label-sm text-error hover:bg-error/5 transition-colors duration-150 cursor-pointer font-sans font-bold text-left focus:outline-none"
+                  >
+                    <LogIn className="w-4 h-4 text-error" />
+                    Đăng xuất
+                  </button>
+                ) : (
+                  <>
+                    <a
+                      href="/login"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-xs px-4 py-2.5 text-label-sm text-on-surface-variant hover:text-[#00288e] hover:bg-surface-container-low transition-colors duration-150 cursor-pointer font-sans font-bold"
+                    >
+                      <LogIn className="w-4 h-4 text-outline" />
+                      Đăng nhập
+                    </a>
+                    <a
+                      href="/register"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-xs px-4 py-2.5 text-label-sm text-on-surface-variant hover:text-[#00288e] hover:bg-surface-container-low transition-colors duration-150 cursor-pointer font-sans font-bold"
+                    >
+                      <UserPlus className="w-4 h-4 text-outline" />
+                      Đăng ký
+                    </a>
+                  </>
+                )}
               </div>
             )}
           </div>
@@ -237,22 +275,37 @@ export default function Header() {
                 Theo dõi đơn hàng
               </a>
               <div className="border-t border-outline-variant/10 my-2"></div>
-              <div className="grid grid-cols-2 gap-sm px-3 pt-1">
-                <a
-                  href="/login"
-                  className="text-center text-label-md font-bold py-2 bg-surface-container rounded-md text-on-surface hover:bg-primary/10 transition-colors duration-150"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Đăng nhập
-                </a>
-                <a
-                  href="/register"
-                  className="text-center text-label-md font-bold py-2 bg-[#00288e] text-white rounded-md hover:bg-[#1e40af] transition-colors duration-150"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Đăng ký
-                </a>
-              </div>
+              {isLoggedIn ? (
+                <div className="px-3 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      handleLogout();
+                    }}
+                    className="w-full text-center text-label-md font-bold py-2 bg-error/10 text-error rounded-md hover:bg-error/20 transition-colors duration-150 focus:outline-none"
+                  >
+                    Đăng xuất
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-sm px-3 pt-1">
+                  <a
+                    href="/login"
+                    className="text-center text-label-md font-bold py-2 bg-surface-container rounded-md text-on-surface hover:bg-primary/10 transition-colors duration-150"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Đăng nhập
+                  </a>
+                  <a
+                    href="/register"
+                    className="text-center text-label-md font-bold py-2 bg-[#00288e] text-white rounded-md hover:bg-[#1e40af] transition-colors duration-150"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Đăng ký
+                  </a>
+                </div>
+              )}
             </div>
           </nav>
         </div>

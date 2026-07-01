@@ -11,7 +11,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!emailOrPhone || !password) {
       alert('Vui lòng điền đầy đủ thông tin đăng nhập!');
@@ -19,21 +19,44 @@ export default function LoginPage() {
     }
 
     setLoading(true);
-    // Simulate login operation
-    setTimeout(() => {
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      const loginUrl = baseUrl ? `${baseUrl}/auth/login` : '/api/auth/login';
+
+      const response = await fetch(loginUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: emailOrPhone,
+          password: password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('email', data.email);
+        localStorage.setItem('role', data.role);
+        alert('Đăng nhập thành công!');
+        window.location.href = '/';
+      } else {
+        alert(data.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin!');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('Đã xảy ra lỗi kết nối đến máy chủ. Vui lòng thử lại sau!');
+    } finally {
       setLoading(false);
-      alert('Đăng nhập thành công!');
-      window.location.href = '/';
-    }, 1000);
+    }
   };
 
   const handleGoogleLogin = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      alert('Đăng nhập bằng tài khoản Google thành công!');
-      window.location.href = '/';
-    }, 1000);
+    // Redirect to backend Google OAuth2 login flow
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+    window.location.href = baseUrl ? `${baseUrl}/oauth2/authorization/google` : 'http://localhost:8080/oauth2/authorization/google';
   };
 
   return (

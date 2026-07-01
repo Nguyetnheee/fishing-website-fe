@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+// ... Lucide imports ... (Lucide-react icons remain same)
 import {
   User,
   ShoppingBag,
@@ -52,10 +53,6 @@ interface Address {
   isDefault: boolean;
 }
 
-
-
-
-
 export default function ProfileDashboard() {
   // Tab states: 'account' | 'orders' | 'addresses'
   const [activeTab, setActiveTab] = useState<'account' | 'orders' | 'addresses'>('account');
@@ -63,33 +60,16 @@ export default function ProfileDashboard() {
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' | 'error' } | null>(null);
 
   // Profile data states
-  const [fullname, setFullname] = useState('Nguyễn Văn A');
-  const [phone, setPhone] = useState('0987654321');
-  const [email, setEmail] = useState('nguyenvana@example.com');
+  const [fullname, setFullname] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [dob, setDob] = useState('1998-05-15');
   const [gender, setGender] = useState<'Nam' | 'Nữ' | 'Khác'>('Nam');
   const [avatarUrl, setAvatarUrl] = useState('/images/user-avatar.png');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Address Book states
-  const [addresses, setAddresses] = useState<Address[]>([
-    {
-      id: 'addr-1',
-      name: 'Nguyễn Văn A',
-      phone: '0987654321',
-      detail: 'Số 12, Ngõ 34, Đường Nguyễn Trãi, Quận Thanh Xuân, Hà Nội',
-      type: 'Nhà riêng',
-      isDefault: true,
-    },
-    {
-      id: 'addr-2',
-      name: 'Nguyễn Văn A',
-      phone: '0987654321',
-      detail: 'Tòa nhà Keangnam, Mễ Trì, Nam Từ Liêm, Hà Nội',
-      type: 'Văn phòng',
-      isDefault: false,
-    },
-  ]);
+  const [addresses, setAddresses] = useState<Address[]>([]);
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [editingAddressId, setEditingAddressId] = useState<string | null>(null);
   const [addressName, setAddressName] = useState('');
@@ -98,61 +78,125 @@ export default function ProfileDashboard() {
   const [addressType, setAddressType] = useState<'Nhà riêng' | 'Văn phòng'>('Nhà riêng');
   const [addressIsDefault, setAddressIsDefault] = useState(false);
 
-  // Mock Order History
-  const [orders, setOrders] = useState<Order[]>([
-    {
-      id: 'WS-12049',
-      date: '24/06/2026',
-      total: '2.450.000đ',
-      status: 'Đang giao',
-      items: [
-        {
-          id: 'prod-1',
-          name: 'Cần câu Carbon Pro-X',
-          price: '2.450.000đ',
-          quantity: 1,
-          imageUrl: '/images/product-rod.png',
-        },
-      ],
-    },
-    {
-      id: 'WS-11920',
-      date: '15/06/2026',
-      total: '9.000.000đ',
-      status: 'Đã giao',
-      items: [
-        {
-          id: 'prod-2',
-          name: 'Lều thám hiểm Peak-4',
-          price: '5.800.000đ',
-          quantity: 1,
-          imageUrl: '/images/product-tent.png',
-        },
-        {
-          id: 'prod-3',
-          name: 'Máy câu Titan-Spin G3',
-          price: '3.200.000đ',
-          quantity: 1,
-          imageUrl: '/images/product-reel.png',
-        },
-      ],
-    },
-    {
-      id: 'WS-11005',
-      date: '02/05/2026',
-      total: '850.000đ',
-      status: 'Đã hủy',
-      items: [
-        {
-          id: 'prod-4',
-          name: 'Ghế dã ngoại xếp gọn WildStream',
-          price: '850.000đ',
-          quantity: 1,
-          imageUrl: '/images/product-chair-terrain.png',
-        },
-      ],
-    },
-  ]);
+  // Mock Order History (Will be overwritten by API)
+  const [orders, setOrders] = useState<Order[]>([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = '/login';
+      return;
+    }
+
+    const fetchProfile = async () => {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+        const profileUrl = baseUrl ? `${baseUrl}/v1/users/me` : '/api/v1/users/me';
+        const res = await fetch(profileUrl, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setFullname(data.fullname || '');
+          setEmail(data.email || '');
+          setPhone(data.phone || '');
+          if (data.address) {
+            setAddresses([
+              {
+                id: 'addr-default',
+                name: data.fullname || 'Khách hàng',
+                phone: data.phone || '',
+                detail: data.address,
+                type: 'Nhà riêng',
+                isDefault: true
+              }
+            ]);
+          } else {
+            setAddresses([
+              {
+                id: 'addr-default',
+                name: data.fullname || 'Khách hàng',
+                phone: data.phone || '',
+                detail: 'Chưa thiết lập địa chỉ mặc định',
+                type: 'Nhà riêng',
+                isDefault: true
+              }
+            ]);
+          }
+        } else {
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        }
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+
+    const fetchOrders = async () => {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+        const ordersUrl = baseUrl ? `${baseUrl}/v1/orders/me` : '/api/v1/orders/me';
+        const res = await fetch(ordersUrl, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const mappedOrders = data.map((o: any) => {
+            let formattedDate = 'Đang cập nhật';
+            if (o.createdAt) {
+              const d = new Date(o.createdAt);
+              if (!isNaN(d.getTime())) {
+                formattedDate = `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`;
+              }
+            }
+            
+            const items = (o.items || []).map((item: any) => ({
+              id: item.id?.toString() || item.productId?.toString(),
+              name: item.productName || 'Sản phẩm',
+              price: item.soldPrice ? `${Number(item.soldPrice).toLocaleString('vi-VN')}đ` : 'Đang cập nhật',
+              quantity: item.quantity || 1,
+              imageUrl: item.productImage || '/images/product-rod.png'
+            }));
+
+            let totalAmountFormatted = '0đ';
+            if (o.totalAmount) {
+              totalAmountFormatted = `${Number(o.totalAmount).toLocaleString('vi-VN')}đ`;
+            } else {
+              const sum = (o.items || []).reduce((acc: number, item: any) => acc + (Number(item.soldPrice) * (item.quantity || 1)), 0);
+              totalAmountFormatted = `${sum.toLocaleString('vi-VN')}đ`;
+            }
+
+            let statusText: 'Chờ xử lý' | 'Đang giao' | 'Đã giao' | 'Đã hủy' = 'Chờ xử lý';
+            if (o.status === 'DELIVERING' || o.status === 'SHIPPED') {
+              statusText = 'Đang giao';
+            } else if (o.status === 'DELIVERED') {
+              statusText = 'Đã giao';
+            } else if (o.status === 'CANCELLED') {
+              statusText = 'Đã hủy';
+            }
+
+            return {
+              id: o.orderCode || o.id?.toString() || 'WS-ORDER',
+              date: formattedDate,
+              total: totalAmountFormatted,
+              status: statusText,
+              items: items
+            };
+          });
+          setOrders(mappedOrders);
+        }
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    };
+
+    fetchProfile();
+    fetchOrders();
+  }, []);
 
 
 
@@ -163,9 +207,42 @@ export default function ProfileDashboard() {
   };
 
   // Profile Save
-  const handleSaveProfile = (e: React.FormEvent) => {
+  const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
-    showToast('Lưu thông tin thay đổi thành công!');
+    const token = localStorage.getItem('token');
+    if (!token) {
+      showToast('Vui lòng đăng nhập lại!', 'error');
+      return;
+    }
+
+    const defaultAddr = addresses.find(addr => addr.isDefault)?.detail || addresses[0]?.detail || 'Chưa thiết lập';
+
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      const profileUrl = baseUrl ? `${baseUrl}/v1/users/me` : '/api/v1/users/me';
+      const res = await fetch(profileUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          fullname: fullname,
+          phone: phone,
+          address: defaultAddr
+        })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        showToast('Lưu thông tin thay đổi thành công!');
+      } else {
+        showToast(data.message || 'Cập nhật thông tin thất bại!', 'error');
+      }
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      showToast('Đã xảy ra lỗi kết nối đến máy chủ. Vui lòng thử lại sau!', 'error');
+    }
   };
 
   // Avatar Upload Helper
@@ -281,6 +358,9 @@ export default function ProfileDashboard() {
   const handleLogout = () => {
     setShowLogoutModal(false);
     showToast('Đang đăng xuất khỏi hệ thống...', 'info');
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
+    localStorage.removeItem('role');
     setTimeout(() => {
       window.location.href = '/';
     }, 1500);
