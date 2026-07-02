@@ -21,7 +21,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
-      const loginUrl = baseUrl ? `${baseUrl}/auth/login` : '/api/auth/login';
+      const loginUrl = baseUrl ? `${baseUrl}/v1/auth/login` : '/api/v1/auth/login';
 
       const response = await fetch(loginUrl, {
         method: 'POST',
@@ -56,7 +56,7 @@ export default function LoginPage() {
   const handleGoogleLogin = () => {
     // Redirect to backend Google OAuth2 login flow
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
-    window.location.href = baseUrl ? `${baseUrl}/oauth2/authorization/google` : 'http://localhost:8080/oauth2/authorization/google';
+    window.location.href = baseUrl ? `${baseUrl}/oauth2/authorization/google` : 'https://fishingecommerce-production.up.railway.app/oauth2/authorization/google';
   };
 
   return (
@@ -66,10 +66,10 @@ export default function LoginPage() {
 
       {/* Main Container - Centering Card */}
       <main className="flex-grow flex items-center justify-center px-margin-mobile py-lg">
-        
+
         {/* LOGIN CARD: White, rounded-2xl, shadow-ambient */}
         <div className="w-full max-w-md bg-white rounded-2xl shadow-ambient border border-outline-variant/10 p-md sm:p-lg text-left">
-          
+
           {/* HEADER: Brand Logo & Headline */}
           <div className="text-center mb-md">
             {/* Custom Brand Icon / Logo */}
@@ -89,7 +89,7 @@ export default function LoginPage() {
 
           {/* FORM FIELDS */}
           <form onSubmit={handleSubmit} className="space-y-md">
-            
+
             {/* Input 1: Email or Phone */}
             <div className="flex flex-col gap-xs">
               <label className="text-label-sm font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-xs">
@@ -119,7 +119,7 @@ export default function LoginPage() {
                   className="w-full bg-[#f8f9fa] border border-[#e5e7eb] rounded-lg py-2.5 pl-3.5 pr-10 text-body-md text-on-surface placeholder-on-surface-variant/40 focus:outline-none focus:border-[#00288e] focus:ring-1 focus:ring-[#00288e] transition-all duration-200"
                   required
                 />
-                
+
                 {/* Toggle Password Visibility */}
                 <button
                   type="button"

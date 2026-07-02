@@ -41,7 +41,7 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
-      const registerUrl = baseUrl ? `${baseUrl}/auth/register` : '/api/auth/register';
+      const registerUrl = baseUrl ? `${baseUrl}/v1/auth/register` : '/api/v1/auth/register';
 
       const response = await fetch(registerUrl, {
         method: 'POST',
@@ -78,10 +78,10 @@ export default function RegisterPage() {
 
       {/* Main Container - Centering Card */}
       <main className="flex-grow flex items-center justify-center px-margin-mobile py-lg">
-        
+
         {/* REGISTER CARD: White, rounded-2xl, shadow-ambient */}
         <div className="w-full max-w-md bg-white rounded-2xl shadow-ambient border border-outline-variant/10 p-md sm:p-lg text-left">
-          
+
           {/* HEADER: Headline & Subtext */}
           <div className="text-center mb-md">
             {/* Custom Brand Icon / Logo */}
@@ -101,7 +101,7 @@ export default function RegisterPage() {
 
           {/* FORM FIELDS */}
           <form onSubmit={handleSubmit} className="space-y-sm">
-            
+
             {/* Input 1: Họ và tên */}
             <div className="flex flex-col gap-xs">
               <label className="text-label-sm font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-xs">
